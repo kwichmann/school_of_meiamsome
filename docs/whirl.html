@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Whirl</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/p5.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/addons/p5.dom.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		var siz = 600;
+		var nSlider;
+		var n, r, angle;
+		var theta, alpha;
+		var delta = 0.1;
+
+		function setup() {
+			createCanvas(siz, siz);
+			nSlider = createSlider(3, 11, 5);
+			nSlider.changed(reset);
+			noFill();
+			colorMode(HSB);
+			reset();
+		}
+
+		function draw() {
+			stroke((angle * 100) % 360, 255, 255);
+			polygon(n, r, angle);
+			r *= Math.sin(theta / 2) / Math.sin(alpha);
+			angle += delta;
+		}
+
+		function reset() {
+			background(0);
+			n = nSlider.value();
+			r = siz * 0.48;
+			angle = 0;
+			theta = (n - 2) * PI / n;
+			alpha = PI - theta / 2 - delta;
+		}
+
+		function polygon(ngon, radius, offset) {
+			push();
+			translate(siz/2, siz/2);
+			beginShape();
+			for (var i = 0; i < ngon; i++) {
+				var x = radius * Math.cos(i * TWO_PI / ngon + offset);
+				var y = radius * Math.sin(i * TWO_PI / ngon + offset);
+				vertex(x, y);
+			}
+			endShape(CLOSE);
+			pop();
+		}
+	</script>
+</body>
+</html>
